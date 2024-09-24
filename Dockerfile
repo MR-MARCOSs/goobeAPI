@@ -14,4 +14,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Comando para iniciar a aplicação
-CMD ["gunicorn", "goobe_api:app"]
+CMD ["gunicorn", "-b", "0.0.0.0:8000", "goobe_api:app"]
