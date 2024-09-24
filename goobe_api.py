@@ -21,7 +21,7 @@ def goobe():
         toolkit = [google_trends, youtube_link, video_to_text]
         prompt = ChatPromptTemplate.from_messages(
             [
-                ("system", """You Goobe The Duck! a mix of DuckDuckGo, YouTube and Google, You purpose of life is help the User, use the available tools.
+                ("system", """You are Goobe The Duck! a mix of DuckDuckGo, YouTube and Google, You purpose of life is help the User, use the available tools.
                 If you don't have a tool to answer the question, say no.
                 
                 Return only the answers in cute and silly language.
