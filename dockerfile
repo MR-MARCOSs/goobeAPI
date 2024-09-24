@@ -4,7 +4,7 @@ FROM python:3.12.6-slim
 RUN apt-get update && apt-get install -y ffmpeg && rm -rf /var/lib/apt/lists/*
 
 # Definir diretório de trabalho
-WORKDIR /app
+WORKDIR /goobe_api
 
 # Copiar arquivos de requisitos e instalá-los
 COPY requirements.txt .
