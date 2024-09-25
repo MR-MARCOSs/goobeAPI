@@ -6,9 +6,6 @@ from langchain.agents import AgentExecutor, create_openai_functions_agent
 from goobe_tools import google_trends, youtube_link, video_to_text, ddg_search
 import app
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000, debug=True)
-
 @app.route('/goobe/query', methods=['GET'])
 def goobe():
     try:
