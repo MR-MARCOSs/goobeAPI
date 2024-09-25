@@ -34,8 +34,7 @@ def goobe():
         agent = create_openai_functions_agent(llm, toolkit, prompt)
         agent_executor = AgentExecutor(agent=agent, tools=toolkit, verbose=True)
         result = agent_executor.invoke({'input': f'{query}'})
-
-        # Retorne apenas a resposta do agente
+        
         agent_response = result['output'] 
         return jsonify({'response': agent_response})
 
