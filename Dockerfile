@@ -7,11 +7,11 @@ RUN apt-get update && apt-get install -y ffmpeg && rm -rf /var/lib/apt/lists/*
 WORKDIR /goobe_api
 
 # Copiar arquivos de requisitos e instalá-los
-COPY requirements.txt .
+COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copiar o restante do código
 COPY . .
 
 # Comando para iniciar a aplicação
-CMD ["gunicorn", "-b", "0.0.0.0:8000", "goobe_api:app"]
+CMD ["gunicorn", "-b", "0.0.0.0:8000", "goobe_api.goobe_api:app"]
