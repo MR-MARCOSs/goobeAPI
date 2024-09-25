@@ -4,10 +4,6 @@ from langchain.tools import tool
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.agents import AgentExecutor, create_openai_functions_agent
 from goobe_tools import google_trends, youtube_link, video_to_text, ddg_search
-from dotenv import load_dotenv
-
-load_dotenv()
-
 
 app = Flask(__name__)
 if __name__ == '__main__':
