@@ -27,7 +27,7 @@ def video_to_text(url):
     
     try:
         # Baixa o áudio do vídeo do YouTube
-        yt = YouTube(url, use_po_token=True)
+        yt = YouTube(url, client='WEB_CREATOR')
         video = yt.streams.filter(only_audio=True).first()
         title = yt.title  # Obtém o título do vídeo
         title_safe = re.sub(r'[\/:*?"<>|]', '', title)  # Remove caracteres inválidos do título para nomes de arquivos
