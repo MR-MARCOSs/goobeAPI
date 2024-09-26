@@ -1,7 +1,5 @@
-from flask import Flask
-from flask import request, jsonify
+from flask import Flask, request, jsonify
 from langchain_openai import ChatOpenAI
-from langchain.tools import tool
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.agents import AgentExecutor, create_openai_functions_agent
 from goobe_tools import google_trends, youtube_link, video_to_text, ddg_search
@@ -15,11 +13,11 @@ def goobe():
         if not query:
             return jsonify({'error': 'Parâmetro "query" é obrigatório.'}), 400
 
-        llm = ChatOpenAI(model='gpt-4', temperature=0.5) 
+        llm = ChatOpenAI(model='gpt-4', temperature=0.5)
         toolkit = [google_trends, youtube_link, video_to_text, ddg_search]
         prompt = ChatPromptTemplate.from_messages(
             [
-                ("system", """You are Goobe The Duck! a mix of DuckDuckGo, YouTube and Google, You purpose of life is help the User, use the available tools.
+                ("system", """You are Goobe The Duck! a mix of DuckDuckGo, YouTube and Google, Your purpose of life is to help the User, use the available tools.
                 If you don't have a tool to answer the question, say no.
                 
                 Return only the answers in cute and silly language.
@@ -38,4 +36,3 @@ def goobe():
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
