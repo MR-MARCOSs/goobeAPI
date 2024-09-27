@@ -8,6 +8,8 @@ from pydub import AudioSegment
 import os
 import whisper
 import re
+import subprocess
+import json
 
 @tool
 def youtube_link(query: str, max_results: int) -> dict[str, any]:
@@ -26,28 +28,25 @@ def video_to_text(url):
     """This tool receives the URL of a YouTube video given by the user and returns what was said in text."""
     
     try:
-        # Baixa o áudio do vídeo do YouTube
-        yt = YouTube(url, client='WEB_CREATOR')
+        
+        def get_youtube_tokens():
+            result = subprocess.run(['node', 'generate_token.js'], stdout=subprocess.PIPE)
+            tokens = json.loads(result.stdout)
+            return tokens['visitorData'], tokens['poToken']
+        
+        visitor_data, po_token = get_youtube_tokens()        
+        yt = YouTube(url, use_po_token=True, visitor_data=visitor_data, po_token=po_token)
         video = yt.streams.filter(only_audio=True).first()
-        title = yt.title  # Obtém o título do vídeo
-        title_safe = re.sub(r'[\/:*?"<>|]', '', title)  # Remove caracteres inválidos do título para nomes de arquivos
-        out_file = video.download(filename=f"{title_safe}.mp4")
-
-        # Converte o áudio para WAV usando pydub
+        title = yt.title  
+        title_safe = re.sub(r'[\/:*?"<>|]', '', title)  
+        out_file = video.download(filename=f"{title_safe}.mp4")        
         wav_filename = f"{title_safe}.wav"
-        AudioSegment.from_file(f"{title_safe}.mp4").set_frame_rate(16000).export(wav_filename, format="wav")
-
-        # Carrega o modelo Whisper
-        model = whisper.load_model("base")  # Você pode escolher diferentes tamanhos de modelo: tiny, base, small, medium, large
-
-        # Usa o Whisper para transcrever o áudio
+        AudioSegment.from_file(f"{title_safe}.mp4").set_frame_rate(16000).export(wav_filename, format="wav")   
+        model = whisper.load_model("base")       
         audio = whisper.load_audio(wav_filename)
-        result = model.transcribe(audio)
-
-        # Obtém o texto transcrito
+        result = model.transcribe(audio)        
         text = result["text"]
-
-        # Remove o arquivo de áudio baixado
+        
         os.remove(f"{title_safe}.mp4")
         os.remove(f"{title_safe}.wav")
 

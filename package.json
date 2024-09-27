@@ -1,0 +1,9 @@
+{
+    "name": "goobe_api",
+    "version": "1.0.0",
+    "main": "generate_token.js",
+    "dependencies": {
+      "youtube-po-token-generator": "^1.0.0"
+    }
+  }
+  
