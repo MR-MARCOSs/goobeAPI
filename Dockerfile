@@ -14,7 +14,7 @@ COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY package.json ./ 
-COPY package-lock.json ./  # Certifique-se de que o package-lock.json está presente no seu repositório
+COPY package-lock.json ./  
 RUN npm install
 
 COPY . .
