@@ -29,16 +29,19 @@ def video_to_text(url):
     
     try:
         
-        def get_youtube_tokens():
+        def po_token_verifier():
             result = subprocess.run(['node', 'generate_token.js'], stdout=subprocess.PIPE)
             tokens = json.loads(result.stdout)
             return tokens['visitorData'], tokens['poToken']
-        
-        visitor_data, po_token = get_youtube_tokens()        
-        yt = YouTube(url, use_po_token=True, visitor_data=visitor_data, po_token=po_token)
+            
+        yt = YouTube(
+            url, 
+            use_po_token=True, 
+            po_token_verifier=po_token_verifier
+        )
         video = yt.streams.filter(only_audio=True).first()
         title = yt.title  
-        title_safe = re.sub(r'[\/:*?"<>|]', '', title)  
+        title_safe = re.sub(r'[\/:*?"<>|]', '', title)
         out_file = video.download(filename=f"{title_safe}.mp4")        
         wav_filename = f"{title_safe}.wav"
         AudioSegment.from_file(f"{title_safe}.mp4").set_frame_rate(16000).export(wav_filename, format="wav")   

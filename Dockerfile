@@ -16,8 +16,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY package.json ./ 
 COPY package-lock.json ./  
 RUN npm install
-RUN npm install YunzheZJU/youtube-po-token-generator
-
 COPY . .
 
 EXPOSE 3000
