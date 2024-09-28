@@ -4,7 +4,7 @@ RUN apt-get update && apt-get install -y \
     ffmpeg \
     curl \
     git \
-    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && curl -fsSL https://deb.nodesource.com/setup_20.15.1 | bash - \
     && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
 
@@ -15,7 +15,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY package.json ./ 
 COPY package-lock.json ./  
-RUN npm install
+RUN npm install && ls -l node_modules
 COPY . .
 
 EXPOSE 3000
