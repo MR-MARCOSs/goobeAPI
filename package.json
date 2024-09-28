@@ -3,6 +3,6 @@
     "version": "1.0.0",
     "main": "generate_token.js",
     "dependencies": {
-        "youtube-po-token-generator": "github:YunzheZJU/youtube-po-token-generator"
+        "youtube-po-token-generator": "^0.2.0" 
     }
 }
