@@ -30,12 +30,17 @@ def video_to_text(url):
     try:
         
         def get_youtube_tokens():
+            print("\n1\n")
             result = subprocess.run(['node', 'generate_token.js'], stdout=subprocess.PIPE)
+            print("\n2\n")
             tokens = json.loads(result.stdout)
+            print("\n3\n")
             return tokens['visitorData'], tokens['poToken']
         
-        visitor_data, po_token = get_youtube_tokens()        
+        visitor_data, po_token = get_youtube_tokens()
+        print("\n4\n")        
         yt = YouTube(url, client='WEB_CREATOR', use_po_token=True, po_token_verifier=po_token)
+        print("\n5\n")
         video = yt.streams.filter(only_audio=True).first()
         title = yt.title  
         title_safe = re.sub(r'[\/:*?"<>|]', '', title)  
