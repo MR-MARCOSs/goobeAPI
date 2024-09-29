@@ -30,9 +30,12 @@ def video_to_text(url):
     try:
         
         def po_token_verifier():
-            result = subprocess.run(['node', 'generate_token.js'], stdout=subprocess.PIPE)
-            tokens = json.loads(result.stdout)
-            return tokens['visitorData'], tokens['poToken']
+          result = subprocess.run(['node', 'generate_token.js'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+          if result.returncode != 0:
+              print(f"Erro ao gerar token: {result.stderr}")
+              return None, None
+          tokens = json.loads(result.stdout)
+          return tokens['visitorData'], tokens['poToken']
             
         yt = YouTube(
             url, 
