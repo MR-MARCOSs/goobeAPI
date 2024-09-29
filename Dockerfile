@@ -19,4 +19,4 @@ COPY . .
 
 EXPOSE 3000
 
-CMD ["gunicorn", "-b", "0.0.0.0:3000", "app:app"]
+CMD ["gunicorn", "-b", "0.0.0.0:3000", "--timeout", "3600", "--graceful-timeout", "3600", "--keep-alive", "3600", "app:app"]
