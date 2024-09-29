@@ -38,9 +38,9 @@ def video_to_text(url):
             return tokens['visitorData'], tokens['poToken']
         
         visitor_data, po_token = get_youtube_tokens()
-        print("\n4\n")        
+        print(f"\n{po_token}\n")        
         yt = YouTube(url, client='WEB_CREATOR', use_po_token=True, po_token_verifier=po_token)
-        print("\n5\n")
+        print(f"\n{yt}\n")
         video = yt.streams.filter(only_audio=True).first()
         print("\n6\n")
         yt_title = yt.title
