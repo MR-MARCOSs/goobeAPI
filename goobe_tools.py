@@ -42,19 +42,29 @@ def video_to_text(url):
         yt = YouTube(url, client='WEB_CREATOR', use_po_token=True, po_token_verifier=po_token)
         print("\n5\n")
         video = yt.streams.filter(only_audio=True).first()
-        title = yt.title  
-        title_safe = re.sub(r'[\/:*?"<>|]', '', title)  
-        out_file = video.download(filename=f"{title_safe}.mp4")        
+        print("\n6\n")
+        yt_title = yt.title
+        print("\n7\n")
+        title_safe = re.sub(r'[\/:*?"<>|]', '', yt_title)  
+        print("\n8\n")
+        out_file = video.download(filename=f"{title_safe}.mp4")  
+        print("\n9\n")      
         wav_filename = f"{title_safe}.wav"
+        print("\n10\n")
         AudioSegment.from_file(f"{title_safe}.mp4").set_frame_rate(16000).export(wav_filename, format="wav")   
-        model = whisper.load_model("base")       
+        print("\n11\n")
+        model = whisper.load_model("base") 
+        print("\n12\n")      
         audio = whisper.load_audio(wav_filename)
+        print("\n13\n")
         result = model.transcribe(audio)        
+        print("\n14\n")
         text = result["text"]
-        
+        print("\n15\n")        
         os.remove(f"{title_safe}.mp4")
+        print("\n16\n")
         os.remove(f"{title_safe}.wav")
-
+        print("\n17\n")
         return text
 
     except Exception as e:
