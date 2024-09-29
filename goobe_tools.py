@@ -29,22 +29,17 @@ def video_to_text(url):
     
     try:
         
-        def po_token_verifier():
-          result = subprocess.run(['node', 'generate_token.js'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-          if result.returncode != 0:
-              print(f"Erro ao gerar token: {result.stderr}")
-              return None, None
-          tokens = json.loads(result.stdout)
-          return tokens['visitorData'], tokens['poToken']
-            
-        yt = YouTube(
-            url, 
-            use_po_token=True, 
-            po_token_verifier=po_token_verifier
-        )
+        def get_youtube_tokens():
+            result = subprocess.run(['node', 'generate_token.js'], stdout=subprocess.PIPE)
+            tokens = json.loads(result.stdout)
+            return tokens['visitorData'], tokens['poToken']
+        
+        visitor_data, po_token = get_youtube_tokens()        
+        yt = YouTube(url, use_po_token=True, visitor_data=visitor_data, po_token=po_token)
+        print("\n1\n")
         video = yt.streams.filter(only_audio=True).first()
         title = yt.title  
-        title_safe = re.sub(r'[\/:*?"<>|]', '', title)
+        title_safe = re.sub(r'[\/:*?"<>|]', '', title)  
         out_file = video.download(filename=f"{title_safe}.mp4")        
         wav_filename = f"{title_safe}.wav"
         AudioSegment.from_file(f"{title_safe}.mp4").set_frame_rate(16000).export(wav_filename, format="wav")   
@@ -61,7 +56,7 @@ def video_to_text(url):
     except Exception as e:
         print(f"Ocorreu um erro: {e}")
         return None
-
+      
 @tool
 def ddg_search(query):
   """This tool receives a input to search on Internet, can be used to return current information and news"""
