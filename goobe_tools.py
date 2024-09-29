@@ -23,6 +23,7 @@ def google_trends(query: str) -> dict[str, any]:
   gtool_wrapper = GoogleTrendsQueryRun(api_wrapper=GoogleTrendsAPIWrapper())
   return gtool_wrapper.run(query)
 
+@tool
 def video_to_text(url):
     """This tool receives the URL of a YouTube video given by the user and returns what was said in text."""
     
