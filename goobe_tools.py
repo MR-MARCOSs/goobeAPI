@@ -23,26 +23,21 @@ def google_trends(query: str) -> dict[str, any]:
   gtool_wrapper = GoogleTrendsQueryRun(api_wrapper=GoogleTrendsAPIWrapper())
   return gtool_wrapper.run(query)
 
-@tool
 def video_to_text(url):
     """This tool receives the URL of a YouTube video given by the user and returns what was said in text."""
     
     try:
         
-        def po_token_verifier():
+        def get_youtube_tokens():
             result = subprocess.run(['node', 'generate_token.js'], stdout=subprocess.PIPE)
             tokens = json.loads(result.stdout)
             return tokens['visitorData'], tokens['poToken']
-            
-        yt = YouTube(
-            url, 
-            use_po_token=True, 
-            po_token_verifier=po_token_verifier
-        )
-        print("\n11111111111\n")
+        
+        visitor_data, po_token = get_youtube_tokens()        
+        yt = YouTube(url, client='WEB_CREATOR', use_po_token=True, po_token_verifier=po_token)
         video = yt.streams.filter(only_audio=True).first()
         title = yt.title  
-        title_safe = re.sub(r'[\/:*?"<>|]', '', title)
+        title_safe = re.sub(r'[\/:*?"<>|]', '', title)  
         out_file = video.download(filename=f"{title_safe}.mp4")        
         wav_filename = f"{title_safe}.wav"
         AudioSegment.from_file(f"{title_safe}.mp4").set_frame_rate(16000).export(wav_filename, format="wav")   

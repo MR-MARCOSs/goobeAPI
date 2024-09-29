@@ -15,6 +15,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY package.json ./ 
 COPY package-lock.json ./  
+RUN npm install
 COPY . .
 
 EXPOSE 3000
