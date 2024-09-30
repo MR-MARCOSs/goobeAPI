@@ -34,7 +34,7 @@ def video_to_text(url):
             tokens = json.loads(result.stdout)
             return tokens['visitorData'], tokens['poToken']
 
-        yt2 = YouTube(url, client='WEB_CREATOR', use_po_token=True, po_token_verifier=get_youtube_tokens)
+        yt2 = YouTube(url, use_po_token=True, po_token_verifier=get_youtube_tokens, allow_oauth_cache=False)
         video = yt2.streams.filter(only_audio=True).first()
         yt2_title = yt2.title
         title_safe = re.sub(r'[\/:*?"<>|]', '', yt2_title)  
