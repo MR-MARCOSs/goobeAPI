@@ -31,8 +31,15 @@ def video_to_text(url):
         
         def get_youtube_tokens():
             result = subprocess.run(['node', 'generate_token.js'], stdout=subprocess.PIPE)
-            tokens = json.loads(result.stdout)
-            return tokens['visitorData'], tokens['poToken']
+            try:
+                tokens = json.loads(result.stdout)
+                print(f"\n{tokens}\n")
+                
+          
+                return tokens['visitorData'], tokens['poToken']
+            except (KeyError, json.JSONDecodeError) as e:
+                print(f"\n{tokens}\n")
+                raise ValueError("Failed to retrieve tokens. Error: ", e)
 
         yt2 = YouTube(url, use_po_token=True, po_token_verifier=get_youtube_tokens, allow_oauth_cache=False)
         video = yt2.streams.filter(only_audio=True).first()
