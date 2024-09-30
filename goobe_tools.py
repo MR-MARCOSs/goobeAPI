@@ -30,41 +30,23 @@ def video_to_text(url):
     try:
         
         def get_youtube_tokens():
-            print("\n1\n")
             result = subprocess.run(['node', 'generate_token.js'], stdout=subprocess.PIPE)
-            print("\n2\n")
             tokens = json.loads(result.stdout)
-            print("\n3\n")
             return tokens['visitorData'], tokens['poToken']
-        
-        visitor_data, po_token = get_youtube_tokens()
-        print(f"\n{po_token}\n")        
-        yt = YouTube(url, client='WEB_CREATOR', use_po_token=True, po_token_verifier=po_token)
-        print(f"\n{yt}\n")
-        video = yt.streams.filter(only_audio=True).first()
-        print("\n6\n")
-        yt_title = yt.title
-        print("\n7\n")
-        title_safe = re.sub(r'[\/:*?"<>|]', '', yt_title)  
-        print("\n8\n")
+
+        yt2 = YouTube(url, client='WEB_CREATOR', use_po_token=True, po_token_verifier=get_youtube_tokens)
+        video = yt2.streams.filter(only_audio=True).first()
+        yt2_title = yt2.title
+        title_safe = re.sub(r'[\/:*?"<>|]', '', yt2_title)  
         out_file = video.download(filename=f"{title_safe}.mp4")  
-        print("\n9\n")      
         wav_filename = f"{title_safe}.wav"
-        print("\n10\n")
         AudioSegment.from_file(f"{title_safe}.mp4").set_frame_rate(16000).export(wav_filename, format="wav")   
-        print("\n11\n")
         model = whisper.load_model("base") 
-        print("\n12\n")      
         audio = whisper.load_audio(wav_filename)
-        print("\n13\n")
         result = model.transcribe(audio)        
-        print("\n14\n")
         text = result["text"]
-        print("\n15\n")        
         os.remove(f"{title_safe}.mp4")
-        print("\n16\n")
         os.remove(f"{title_safe}.wav")
-        print("\n17\n")
         return text
 
     except Exception as e:
